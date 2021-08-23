@@ -30,7 +30,7 @@ resample <- function(df, interval=0.25) {
   result <- data.frame()
   
   for(d in new_depth) {
-    agg_range <- depth <= (d + interval) & depth >= (d - interval)
+    agg_range <- (depth <= (d + interval) & depth >= (d - interval))
     result <- rbind(result, df[agg_range,] %>% colMeans())
   } 
   
@@ -43,7 +43,7 @@ resample <- function(df, interval=0.25) {
 
 preprocess <- function(df, config) {
   downcast <- separate(df)$downcast
-  pre_data <- init_filter(df, config$bad_depth_threshold)
+  pre_data <- init_filter(downcast, config$bad_depth_threshold)
   
   if (nrow(pre_data) < 1) {
     return(NULL)

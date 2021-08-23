@@ -28,7 +28,7 @@ read_cnv_file <- function(filename) {
   
   counter <- counter + 1
   
-  data <- lines[counter: length(lines)] |> sapply(read_cnv_dataline) |> t() |> data.frame(row.names = NULL)
+  data <- lines[counter: length(lines)] %>% sapply(read_cnv_dataline) %>% t() %>% data.frame(row.names = NULL)
   names(data) <- feature_columns
   
   # add data frame rename
@@ -38,14 +38,14 @@ read_cnv_file <- function(filename) {
 }
 
 read_cnv_metaline <- function(line) {
-  tmp <- strsplit(line, "=")[[1]][2] |> trimws()
+  tmp <- strsplit(line, "=")[[1]][2] %>% trimws()
   return(strsplit(tmp, ":")[[1]][1])
 }
 
 read_cnv_dataline <- function(line) {
   tmp <- strsplit(line, " ")[[1]]
-  result <- tmp[sapply(tmp, function(x) {x != ""})] |> 
-    sapply( function(x){as.double(x)}) |> 
+  result <- tmp[sapply(tmp, function(x) {x != ""})] %>% 
+    sapply( function(x){as.double(x)}) %>% 
     setNames(NULL)
   return(result)
 }

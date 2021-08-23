@@ -45,10 +45,11 @@ cleandata <- data$filtered_data
 # thermocline_result contains the thermocline features
 thermocline_result <- detect_thermocline(cleandata, thermocline_config)
 print(names(thermocline_result))
-plot_thermocline(cleandata, thermocline_result)
+print(thermocline_result$trm_depth)
+print(plot_thermocline(cleandata, thermocline_result))
 
 # dcl_result contains the dcl features
 dcl_result <- detect_dcl(cleandata, downcast, thermocline_result$lep_depth, thermocline_result$lep_depth, dcl_config)
 print(names(dcl_result))
-plot_dcl(dcl_result, cleandata)
+print(plot_dcl(dcl_result, cleandata))
 

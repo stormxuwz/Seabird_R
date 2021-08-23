@@ -235,12 +235,14 @@ peak_raw_filters <- function(raw_peaks, values, threshold, peak_minimum_interval
   if (length(raw_peaks) > 0) {
     raw_peaks_new <- c(raw_peaks[1])
     
-    for (i in 2: length(raw_peaks)) {
-      if (raw_peaks[i] - tail(raw_peaks_new, 1) > peak_minimum_interval) {
-        raw_peaks_new <- c(raw_peaks_new, raw_peaks[i])
-      } else {
-        if (values[raw_peaks[i]] > values[tail(raw_peaks_new, 1)]) {
-          raw_peaks_new[length(raw_peaks_new)] <- raw_peaks[i]
+    if(length(raw_peaks) > 1) {
+      for (i in 2: length(raw_peaks)) {
+        if (raw_peaks[i] - tail(raw_peaks_new, 1) > peak_minimum_interval) {
+          raw_peaks_new <- c(raw_peaks_new, raw_peaks[i])
+        } else {
+          if (values[raw_peaks[i]] > values[tail(raw_peaks_new, 1)]) {
+            raw_peaks_new[length(raw_peaks_new)] <- raw_peaks[i]
+          }
         }
       }
     }
@@ -258,7 +260,7 @@ detect_dcl <- function(df, rawdata, chl_peak_min_depth, chl_peak_upper_depth_bou
   features <- list(
     allConc = sum(df$Fluorescence),
     allConc_upper = sum(df$Fluorescence[1:chl_peak_upper_depth_boundary_index]),
-    peakNums = length(all_peaks)
+    peakNums = nrow(all_peaks)
   )
   
   if(features$peakNums == 0) {

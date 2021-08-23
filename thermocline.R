@@ -99,6 +99,7 @@ get_gradient_from_segment <- function(segment, depth_interval) {
 
 # function to detect thermocline
 detect_thermocline <- function(df, config) {
+  
   segment_list <- generate_segment(df$Temperature, config$max_error)
   gradient <- sapply(segment_list, get_gradient_from_segment, depth_interval = 0.25)
   max_gradient_index <- which.max(gradient)
@@ -138,7 +139,7 @@ detect_thermocline <- function(df, config) {
     gradient_is_stable[length(gradient_is_stable)] <- abs(gradient[length(gradient_is_stable)]) < config$stable_gradient_relaxed
     
     
-    # fine LEP and UHY
+    # find LEP and UHY
     surface_temperature <- segment_list[[1]]$values %>% head(1)
     bottom_temperature <- segment_list[[segment_list_len]]$values %>% tail(1)
     
@@ -193,7 +194,7 @@ detect_thermocline <- function(df, config) {
 
 plot_thermocline <- function(df, thermocline_result) {
   library(ggplot2)
-  p <- ggplot(data = df) + geom_line(aes(y=-Depth, x=Temperature))
+  p <- ggplot(data = df) + geom_line(aes(y=-Depth, x=Temperature)) 
   p <- p + geom_hline(aes(yintercept = -thermocline_result$trm_depth))
   p <- p + geom_hline(aes(yintercept = -thermocline_result$uhy_depth))
   p <- p + geom_hline(aes(yintercept = -thermocline_result$lep_depth))
