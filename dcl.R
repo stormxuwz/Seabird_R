@@ -111,8 +111,13 @@ detect_peak <- function(values, config) {
       }
   }
   
-  boundaries <- find_boundaries(values, raw_peaks, peak_size)
-  peak_features <- extract_peak_features(boundaries)
+  if(length(raw_peaks) > 2){
+    boundaries <- find_boundaries(values, raw_peaks, peak_size)
+    peak_features <- extract_peak_features(boundaries)
+  } else {
+    peak_features <- extract_peak_features(list())
+  }
+  
   return(peak_features)
 }
 
@@ -139,6 +144,10 @@ extract_peak_features <- function(boundaries) {
 
 find_peak_height <- function(values, raw_peaks) {
   peak_heights <- c()
+  
+  if(length(raw_peaks) == 2){
+    return(peak_heights)
+  }
   
   for (i in 2:(length(raw_peaks) - 1)) {
     prev_peak <- raw_peaks[i - 1]
